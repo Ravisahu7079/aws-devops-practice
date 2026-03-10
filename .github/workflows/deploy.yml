@@ -9,5 +9,5 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      -name: Deploy to EC2
+      - name: Deploy to EC2
         run: echo "Deploying to EC2!"
