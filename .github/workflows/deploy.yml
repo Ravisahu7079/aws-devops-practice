@@ -1,13 +1,31 @@
 name: Deploy to EC2
+
 on:
   push:
     branches:
       - main
+
+env:
+  AWS_REGION: ap-south-1
+  APP_NAME: myapp
+  
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Deploy to EC2
-        run: echo "Deploying to EC2!"
+      - name: Run tests
+        run: echo "Running tests..."
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Configure AWS
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWSACCESSKEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWSSECRETKEY }}
+        run: echo "Deploying ${{ env.APP_NAME }} to ${{ env.AWS_REGION }}"          
